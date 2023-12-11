@@ -1,0 +1,385 @@
+<!DOCTYPE HTML>
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+  <title>Shaocong Dong (董少聪)</title>
+  
+  <meta name="author" content="Shaocong Dong">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  <link rel="stylesheet" type="text/css" href="stylesheet.css">
+	<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌐</text></svg>">
+</head>
+
+<body>
+  <table style="width:100%;max-width:800px;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;"><tbody>
+    <tr style="padding:0px">
+      <td style="padding:0px">
+        <table style="width:100%;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;"><tbody>
+          <tr style="padding:0px">
+            <td style="padding:2.5%;width:63%;vertical-align:middle">
+              <p style="text-align:center">
+                <name>Shaocong Dong</name>
+              </p>
+              <p>I am a first-year CSE Ph.D. student of The Chinese University of Hong Kong, and my advisor is Prof. <a href="https://www.danxurgb.net/">Dan Xu</a>. I received both my Bachelor's and Master's degrees from <a href="https://english.bit.edu.cn/">Beijing Institute of Technology</a>, supervised by Prof. <a href="https://scholar.google.com/citations?user=sQ_nP0ZaMn0C&hl=en">Jianan Li</a>. I spent a wonderful time in <a href="https://qcraft.ai/en">Qcraft</a> and SenseTime as a research intern, mentored by <a href="https://www.linkedin.com/in/boyin-zhang/">Boyin Zhang</a> and Dr. Zhanpeng Huang, respectively.
+              </p>
+              <p>
+                My current research interest lies in 3D vision, especially for high-quality, controllable 3D Generation with Diffusion Model and NeRF.
+              </p>
+              <p style="text-align:center">
+                <a href="data/dongshaocong-wechat.txt">Wechat</a> &nbsp/&nbsp
+                <a href="https://scholar.google.com/citations?user=Pee4FRsAAAAJ&hl=en">Google Scholar</a> &nbsp/&nbsp
+                <a href="https://github.com/hkdsc/">Github</a> 
+		<br>
+		<a href="mailto:sdongae@cse.ust.hk">Email</a>: sdongae at cse dot ust dot hk or dongshaocong at outlook dot com
+              </p>
+            </td>
+            <td style="padding:2.5%;width:40%;max-width:40%">
+              <a href="images/personal.jpg"><img style="width:100%;max-width:100%" alt="profile photo" src="images/personal_circle.jpg" class="hoverZoomLink"></a>
+            </td>
+          </tr>
+        </tbody></table>
+        <table style="width:100%;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;"><tbody>
+            <tr>
+            <td style="padding:20px;width:100%;vertical-align:middle">
+              <heading>Research</heading>
+              <p>
+                I have been working on <span class="highlight">Diffusion Model</span> for 3D generation. My previous work also included <span class="highlight">3D perception on Point Clouds</span>. (*: Equal Contribution †: Corresponding Author)
+              </p>
+            </td>
+          </tr>
+        </tbody></table>
+        <table style="width:100%;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;"><tbody>
+          <tr onmouseout="bidiff_stop()" onmouseover="bidiff_start()">
+			      <td style="padding:10px;width:40%;vertical-align:middle">
+			        <div class="one" style="width:100%">
+			          <div class="two" id='bidiff_image' style="width:100%"><video  width=100% muted autoplay loop>
+			          <source src="images/eagle.gif" type="video/gif">
+			          Your browser does not support the video tag.
+			          </video></div>
+			          <img src='images/gundam.gif' style="width:100%">
+			        </div>
+			        <script type="text/javascript">
+			          function bidiff_start() {
+			            document.getElementById('bidiff_image').style.opacity = "1";
+			          }
+
+			          function bidiff_stop() {
+			            document.getElementById('bidiff_image').style.opacity = "0";
+			          }
+			          refnerf_stop()
+			        </script>
+			      </td>
+			            <td style="padding:10px;width:60%;vertical-align:middle">
+			          <a href="https://bidiff.github.io/">
+			            <papertitle>Text-to-3D Generation with Bidirectional Diffusion using both 2D and 3D priors</papertitle>
+			          </a>
+			          <br>
+			          Lihe Ding*,
+			          <strong>Shaocong Dong*</strong>,
+                Zhanpeng Huang,
+			          Zibin Wang†,
+                Yiyuan Zhang,
+                Kaixiong Gong,
+			          Dan Xu,
+                Tianfan Xue
+			          <!-- <a href="https://tianfan.info/">Tianfan Xue</a>† -->
+			          <br>
+			    <em>arXiv</em>, 2023
+			          <br>
+			          <a href="https://bidiff.github.io/">project page</a>
+			    /
+			          <a href="https://arxiv.org/abs/2312.04963">paper</a>
+			    /
+			          <a href="https://www.youtube.com/watch?v=3AHDbJlGKwY">video</a>
+			          <p></p>
+			          <p>We intergrate both 3D and 2D diffusion models with powerful priors into a unified framework with bidirectional guidance.</p>
+			        </td>
+			      </tr>
+
+          <tr onmouseout="fhnet_stop()" onmouseover="fhnet_start()">
+			      <td style="padding:10px;width:40%;vertical-align:middle">
+			        <div class="one" style="width:100%">
+			          <div class="two" id='fhnet_image' style="width:100%"><video  width=100% muted autoplay loop>
+			          <source src="images/fhnet.mp4" type="video/mp4">
+			          Your browser does not support the video tag.
+			          </video></div>
+			          <img src='images/fhnet.jpg' style="width:100%">
+			        </div>
+			        <script type="text/javascript">
+			          function fhnet_start() {
+			            document.getElementById('fhnet_image').style.opacity = "1";
+			          }
+
+			          function fhnet_stop() {
+			            document.getElementById('fhnet_image').style.opacity = "0";
+			          }
+			          refnerf_stop()
+			        </script>
+			      </td>
+			            <td style="padding:10px;width:60%;vertical-align:middle">
+			          <a href="papers/FH-Net-ECCV2022.pdf">
+			            <papertitle>FH-Net: A Fast Hierarchical Network for Scene Flow Estimation on Real-world Point Clouds</papertitle>
+			          </a>
+			          <br>
+			          Lihe Ding*,
+			          <strong>Shaocong Dong*</strong>,
+			          Tingfa Xu†,
+			          Xinli Xu,
+			          Jie Wang,
+			          <a href="https://scholar.google.com/citations?user=sQ_nP0ZaMn0C&hl=en">Jianan Li</a>†
+			          <br>
+			    <em>ECCV</em>, 2022 &nbsp <font color="red"><strong>(Oral Presentation)</strong></font>
+			          <br>
+			          <a href="https://github.com/pigtigger/FH-Net">project page</a>
+			    /
+			          <a href="papers/FH-Net-ECCV2022.pdf">paper</a>
+			    /
+			          <a href="https://drive.google.com/uc?export=download&id=1p5YfvI7B03psV671uBlJZTtq687vpgrC">video</a>
+			          <p></p>
+			          <p>We establish new lidar-scanned scene flow datasets and propose a fast and hierarchical network for real-world scene flow estimation.</p>
+			        </td>
+			      </tr>
+
+          
+            <tr onmouseout="mssvt_stop()" onmouseover="mssvt_start()">
+              <td style="padding:10px;width:40%;vertical-align:middle">
+                <div class="one" style="width:100%">
+                  <div class="two" id='mssvt_image' style="width:100%">
+                      <img src='images/mssvt_after.png' style="width:100%"></div>
+                  <img src='images/mssvt.png' style="width:100%">
+                </div>
+                <script type="text/javascript">
+                  function mssvt_start() {
+                    document.getElementById('mssvt_image').style.opacity = "1";
+                  }
+  
+                  function mssvt_stop() {
+                    document.getElementById('mssvt_image').style.opacity = "0";
+                  }
+                  mssvt_stop()
+                </script>
+              </td>
+              <td style="padding:10px;width:60%;vertical-align:middle">
+                <a href="papers/MsSVT-NeurIPS2022.pdf">
+                  <papertitle>MsSVT: Mixed-scale Sparse Voxel Transformer for 3D Object Detection on Point Clouds</papertitle>
+                </a>
+                <br>
+                <strong>Shaocong Dong*</strong>, 
+                Lihe Ding*, 
+                <a href="https://scholar.google.com/citations?user=R3Av3IkAAAAJ&hl=en">Haiyang Wang</a>,
+                Tingfa Xu†,
+                Xinli Xu,
+                Jie Wang,
+          Ziyang Bian,
+          <a href="https://scholar.google.com/citations?hl=zh-CN&user=XK7uZYcAAAAJ">Ying Wang</a>,
+          <a href="https://scholar.google.com/citations?user=sQ_nP0ZaMn0C&hl=en">Jianan Li</a>†
+                <br>
+                <em>NeurIPS</em>, 2022  
+                <br> 
+                <a href="papers/MsSVT-NeurIPS2022.pdf">paper</a> / 
+                <a href="https://github.com/dscdyc/MsSVT">code</a>				
+                <p></p>
+                <p>We propose the first powerful 3D window-based transformer backbone on sparse 3D voxels leveraging mixed-scale information.</p>
+              </td>
+            </tr>
+
+          <tr onmouseout="cagroup_stop()" onmouseover="cagroup_start()">
+            <td style="padding:10px;width:40%;vertical-align:middle">
+              <div class="one" style="width:100%">
+                <div class="two" id='cagroup_image' style="width:100%">
+                  <img src='images/cagroup_after.png' style="width:100%"></div>
+                <img src='images/cagroup.png' style="width:100%">
+              </div>
+              <script type="text/javascript">
+                function cagroup_start() {
+                  document.getElementById('cagroup_image').style.opacity = "1";
+                }
+
+                function cagroup_stop() {
+                  document.getElementById('cagroup_image').style.opacity = "0";
+                }
+                cagroup_stop()
+              </script>
+            </td>
+            <td style="padding:10px;width:60%;vertical-align:middle">
+              <a href="papers/CAGroup3D-NeurIPS2022.pdf">
+                <papertitle>CAGroup3D: Class-Aware Grouping for 3D Object Detection on Point Clouds</papertitle>
+              </a>
+              <br>
+              <a href="https://scholar.google.com/citations?user=R3Av3IkAAAAJ&hl=en">Haiyang Wang</a>*,
+	            Lihe Ding*,
+              <strong>Shaocong Dong</strong>,
+              <a href="https://shishaoshuai.com/">Shaoshuai Shi</a>†, 
+	      <a href="https://dblp.org/pid/152/6095.html">Aoxue Li</a>,
+              <a href="https://scholar.google.com/citations?user=sQ_nP0ZaMn0C&hl=en">Jianan Li</a>,
+              <a href="https://scholar.google.com/citations?user=XboZC1AAAAAJ&hl=en">Zhenguo Li</a>, 
+              <a href="https://scholar.google.com.hk/citations?hl=zh-CN&user=VZHxoh8AAAAJ">Liwei Wang</a>†
+              <br>
+              <em>NeurIPS</em>, 2022
+              <br>
+              <a href="https://arxiv.org/abs/2210.04264">paper</a>
+              /
+	      <a href="https://github.com/Haiyang-W/CAGroup3D">code</a>
+              <p></p>
+              <p>
+              We propose a novel class-aware 3D proposal generation strategy and an efficient fully sparse convolutional 3D refinement module for vote-based Indoor 3D Detection.
+              </p>
+            </td>
+          </tr>
+					
+	  
+	  <tr>
+            <td style="padding:10px;width:40%;vertical-align:middle">
+              <img src='images/fusionrcnn.png' style="width:100%">
+            </td>
+            <td style="padding:10px;width:60%;vertical-align:middle">
+							<a href="https://arxiv.org/abs/2209.10733">
+                <papertitle>FusionRCNN: LiDAR-Camera Fusion for Two-stage 3D Object Detection</papertitle>
+              </a>
+              <br>
+              Xinli Xu,
+              <strong>Shaocong Dong</strong>,
+              Lihe Ding,
+	      Jie Wang,
+              Tingfa Xu,
+	      <a href="https://scholar.google.com/citations?user=sQ_nP0ZaMn0C&hl=en">Jianan Li</a>†
+              <br>
+              <em>arXiv</em>, 2022  
+              <br>
+							<a href="https://arxiv.org/abs/2209.10733">paper</a> /
+		    					<a href="https://github.com/xxlbigbrother/Fusion-RCNN">code</a>
+              <p></p>
+              <p>We propose a novel multi-modality two-stage approach to effectively and efficiently fuse point clouds and camera images in the Regions of Interest(RoI).</p>
+            </td>
+          </tr>
+	  
+
+        </tbody></table>
+
+				
+        <table width="100%" align="center" border="0" cellspacing="0" cellpadding="20"><tbody>
+          <tr>
+            <td>
+              <heading>Education</heading>
+            </td>
+          </tr>
+        </tbody></table>
+        <table width="100%" align="center" border="0" cellpadding="20"><tbody>
+	
+          <tr>
+            <td style="padding:70px;width:25%;vertical-align:middle">
+              <img src="images/HKUST_logo.png", style="width: 60px;">
+            </td>
+            <td width="75%" valign="center">
+              PhD of CSE @ The Hong Kong University of Science and Technology
+              <br>
+              Sep. 2023 - Now
+              <br>
+              Advisor: Prof.<a href="https://www.danxurgb.net/">Dan Xu</a>
+            </td>
+          </tr>
+
+	<tr>
+            <td style="padding:20px;width:25%;vertical-align:middle">
+              <img src="images/bit_small.png">
+            </td>
+            <td width="75%" valign="center">
+              MSc in Opt-Electronics information Science and Engineeering @ Beijing Institute of Technology
+              <br>
+              Sep. 2020 - Jun. 2023
+              <br>
+              Advisor: Prof.<a href="https://scholar.google.com/citations?user=sQ_nP0ZaMn0C&hl=en">Jianan Li</a>
+            </td>
+          </tr>
+		
+	  <tr>
+            <td style="padding:20px;width:25%;vertical-align:middle"><img src="images/bit_small.png"></td>
+            <td width="75%" valign="center">
+              BSc in Opt-Electronics information Science and Engineeering @ Beijing Institute of Technology
+              <br>
+              Sep. 2016 - Jun. 2020
+	      <br>
+            </td>
+          </tr>
+       
+	<table width="100%" align="center" border="0" cellspacing="0" cellpadding="20"><tbody>
+          <tr>
+            <td>
+              <heading>Experience</heading>
+            </td>
+          </tr>
+        </tbody></table>
+		<table width="100%" align="center" border="0" cellpadding="20"><tbody>
+
+	<tr>
+            <td style="padding:20px;width:25%;vertical-align:middle">
+              <img src="images/sensetime.png">
+            </td>
+            <td width="75%" valign="center">
+              Metaverse Video R&D at SenseTime
+              <br>
+              Research Intern
+              <br>
+              Text-to-3D Generation using both 2D and 3D priors
+              <br>
+              May, 2023 - Sep, 2023
+	      <br>
+	      Mentor: Dr. Zhanpeng Huang
+	      <br>
+	      3DAR Group
+            </td>
+          </tr>
+			
+          <tr>
+            <td style="padding:20px;width:25%;vertical-align:middle">
+              <img src="images/tsinghua_small.png">
+            </td>
+            <td width="75%" valign="center">
+              <a href="https://iiis.tsinghua.edu.cn/">Institute for Interdisciplinary Information Sciences (IIIS)</a> at Tsinghua University
+              <br>
+              Research Assistant
+              <br>
+              3D Generation with diffusion model and implicit fuction
+              <br>
+              May, 2022 - Sep, 2022
+	      <br>
+	      Advisor: Prof. <a href="https://ericyi.github.io/">Li Yi</a>
+	      <br>
+	      3D Visual Computing and Machine Intelligence (3DVICI) Lab
+            </td>
+          </tr>
+
+	  <tr>
+            <td style="padding:20px;width:25%;vertical-align:middle"><img src="images/qcraft.png"></td>
+            <td width="75%" valign="center">
+              <a href="https://qcraft.ai/en">Qcraft</a>
+              <br>
+              Research Intern
+              <br>
+              Beijing, China
+              <br>
+              May, 2021 - Mar, 2022
+	      <br>
+	      Mentor: <a href="https://www.linkedin.com/in/boyin-zhang/">Boyin Zhang</a>
+              <br>
+	      Perception & Machine Learning Group
+            </td>
+          </tr>
+							
+        </tbody></table>
+        <table style="width:100%;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;"><tbody>
+          <tr>
+            <td style="padding:0px">
+              <br>
+              <p style="text-align:right;font-size:small;">
+                 Template from <a href="https://github.com/jonbarron/jonbarron_website">JonBarron</a>
+              </p>
+            </td>
+          </tr>
+        </tbody></table>
+      </td>
+    </tr>
+  </table>
+</body>
+
+</html>
