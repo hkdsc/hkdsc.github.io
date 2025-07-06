@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Copart: Contextual Part Latents for 3D Generation</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Bootstrap -->
+  <link href="css/bootstrap-4.4.1.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-MKXKR65E15"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-MKXKR65E15');
+  </script>
+  <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
+        rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+        
+  <link rel="stylesheet" href="./static/css/index.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+
+  <script src="static/js/dics.min.js"></script>
+  <script>
+      document.addEventListener('DOMContentLoaded', domReady);
+      function domReady() {
+          for (const e of document.querySelectorAll(".b-dics")) {
+              new Dics({
+                  container: e,
+                  textPosition: "top"
+              });
+          }
+      }
+  </script>
+  <link rel="shortcut icon" href="assets/imgs/sparse_icon.ico" type="image/x-icon" />
+<style>
+  /* ─── Load-mesh / Load-video toggle button ─── */
+  .toggle-btn {
+    display: block;          /* take the whole line */
+    width: 100%;             /* edge-to-edge */
+    padding: 1rem 0;         /* top/bottom space, no side padding */
+    background: #f2f2f2;     /* light grey like the screenshot */
+    border: none;            /* no border */
+    border-radius: 0;        /* square corners */
+    font-size: 1.25rem;      /* readable label */
+    font-weight: 500;
+    color: #000;             /* solid black text */
+    text-align: center;
+    cursor: pointer;
+    transition: background 0.15s ease;
+  }
+
+  /* subtle hover / active feedback */
+  .toggle-btn:hover   { background: #e5e5e5; }
+  .toggle-btn:active  { background: #d9d9d9; }
+
+  /* optional: remove Bulma’s focus outline but keep accessibility */
+  .toggle-btn:focus-visible {
+    outline: 3px solid #3273dc;   /* Bulma primary blue */
+    outline-offset: 2px;
+  }
+
+  /* --- keep video & model-viewer in lock-step --- */
+  .media-wrapper {
+    width: 100%;        /* whatever the carousel gives us        */
+    max-width: 100%;    /* stay responsive                       */
+  }
+  .media-wrapper > video,
+  .media-wrapper > model-viewer {
+    width: 100%;        /* fill the wrapper pixel-for-pixel      */
+    height: auto;       /* let each keep its own aspect ratio    */
+    display: block;
+  }
+</style>
+
+<style>
+  /* ─── Load-mesh / Load-video toggle button ─── */
+  .toggle-btn {
+    display: block;          /* take the whole line */
+    width: 100%;             /* edge-to-edge */
+    padding: 1rem 0;         /* top/bottom space, no side padding */
+    background: #f2f2f2;     /* light grey like the screenshot */
+    border: none;            /* no border */
+    border-radius: 0;        /* square corners */
+    font-size: 1.25rem;      /* readable label */
+    font-weight: 500;
+    color: #000;             /* solid black text */
+    text-align: center;
+    cursor: pointer;
+    transition: background 0.15s ease;
+  }
+
+  /* subtle hover / active feedback */
+  .toggle-btn:hover   { background: #e5e5e5; }
+  .toggle-btn:active  { background: #d9d9d9; }
+
+  /* optional: remove Bulma's focus outline but keep accessibility */
+  .toggle-btn:focus-visible {
+    outline: 3px solid #3273dc;   /* Bulma primary blue */
+    outline-offset: 2px;
+  }
+
+  /* --- keep video & model-viewer in lock-step --- */
+  .media-wrapper {
+    width: 100%;        /* whatever the carousel gives us        */
+    max-width: 100%;    /* stay responsive                       */
+  }
+  .media-wrapper > video,
+  .media-wrapper > model-viewer {
+    width: 100%;        /* fill the wrapper pixel-for-pixel      */
+    height: auto;       /* let each keep its own aspect ratio    */
+    display: block;
+  }
+
+  /* 鲜艳的渐变色效果 */
+  .grad2 {
+    background: linear-gradient(45deg, #ff073a, #ff4081, #e91e63, #9c27b0, #673ab7);
+    background-size: 400% 400%;
+    animation: gradientShift 3s ease infinite;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+  }
+
+  @keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+</style>
+
+</head>
+<body>
+
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-1 publication-title-name"><span class="grad2">CoPart</span></h1>
+          <h1 class="title is-1 publication-title">Contextual Part Latents for 3D Generation</h1>
+          <div class="is-size-5 publication-authors">
+            <span class="author-block">
+              <a href="https://hkdsc.github.io/">Shaocong&nbsp;Dong</a><sup>1,3*</sup>, </span>
+            <span class="author-block">
+              <a href="https://dinglihe.github.io/">Lihe&nbsp;Ding</a><sup>2,3*</sup>, </span>
+            <span class="author-block">
+              <a href="https://xiao-chen.tech/">Xiao&nbsp;Chen</a><sup>2</sup>, </span>
+            <span class="author-block">
+              <a href="https://scholar.google.com/citations?user=plCD9wwAAAAJ">Yaokun&nbsp;Li</a><sup>2</sup>, </span>
+            <span class="author-block">
+              <a href="https://w-ted.github.io/">Yuxin&nbsp;Wang</a><sup>1</sup>, </span>
+    
+            <span class="author-block">
+              <a href="https://wangandyyucheng.github.io/">Yucheng&nbsp;Wang</a><sup>1</sup>, </span>
+            </br>
+            <span class="author-block">
+              <a href="https://qwang666.github.io/">Qi&nbsp;Wang</a><sup>1</sup>,
+            </span>
+            <span class="author-block">
+              <a href="https://stevejaehyeok.github.io/">Jaehyeok&nbsp;Kim</a><sup>1</sup>,
+            </span>
+            <span class="author-block">
+              <a href="https://scholar.google.com/citations?user=BXoHuGwAAAAJ">Chenjian&nbsp;Gao</a><sup>2</sup>,
+            </span>
+            <span class="author-block">
+              <a href="https://www.linkedin.com/in/zhanpeng-huang-85853384?originalSubdomain=hk">Zhanpeng&nbsp;Huang</a><sup>3</sup>,
+            </span>
+            <span class="author-block">
+              <a href="https://openreview.net/profile?id=~Zibin_Wang1">Zibin&nbsp;Wang</a><sup>3</sup>,
+            </span>
+            <span class="author-block">
+              <a href="https://tianfan.info/">Tianfan&nbsp;Xue</a><sup>2†</sup>
+            </span>
+            <span class="author-block">
+              <a href="https://www.danxurgb.net/">Dan&nbsp;Xu</a><sup>1†</sup>
+            </span>
+          </div>
+          </br>
+          <div class="is-size-5 publication-authors">
+            <!-- <table class="author-logo-table">
+            <colgroup>
+              <col style="width: 6%;">
+              <col style="width: 1%;">
+              <col style="width: 6%;">
+              <col style="width: 1%;">
+              <col style="width: 6%;">
+              <col style="width: 1%;">
+              <col style="width: 6%;">
+            </colgroup>
+              <tr>
+                <td><img src="assets/logos/nju.jpg" alt="NJU Logo" class="author-logo"></td>
+                <td></td>
+                <td><img src="assets/logos/dreamtech.png" alt="DreamTech Logo" class="author-logo"></td>
+                <td></td>
+                <td><img src="assets/logos/fudan.png" alt="Fudan Logo" class="author-logo"></td>
+                <td></td>
+                <td><img src="assets/logos/oxford.png" alt="Oxford Logo" class="author-logo"></td>
+              </tr>
+            </table> -->
+
+            <span class="author-block"><sup>1</sup>HKUST&nbsp;&nbsp;&nbsp; </span>
+            <span class="author-block"><sup>2</sup>CUHK&nbsp;&nbsp;&nbsp; </span>
+            <span class="author-block"><sup>3</sup>SenseTime Research&nbsp;&nbsp;&nbsp;</span>
+
+          </div>
+          
+          <p style="text-align:center"><sup>*</sup>Equal contribution &nbsp;&nbsp; <sup>†</sup>Corresponding author</p>
+          
+          <div class="column has-text-centered">
+            <div class="publication-links">
+              <!-- PDF Link. -->
+              <span class="link-block">
+                <a href="https://arxiv.org/"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <!-- <i class="ai ai-arxiv"></i> -->
+                      <img src="assets/imgs/arxiv-logomark-small.svg" style="height: 80%;">
+                  </span>
+                  <span>arXiv</span>
+                </a>
+              </span>
+              <!-- Video Link. -->
+              <!-- <span class="link-block">
+                <a href="https://nju-3dv.github.io/projects/Direct3D-S2/"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fab fa-youtube"></i>
+                  </span>
+                  <span>Video</span>
+                </a>
+              </span> -->
+              <!-- Code Link. -->
+              <span class="link-block">
+                <a href="https://github.com/"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fab fa-github"></i>
+                  </span>
+                  <span>Code</span>
+                  </a>
+              </span>
+              <span class="link-block">
+                <a href="https://github.com/"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fas fa-database"></i>
+                  </span>
+                  <span>Data</span>
+                  </a>
+              </span>
+            </div>
+          </div>
+
+          <!-- <div class="column has-text-centered">
+            <div class="announcement-text">
+              <p> 🚀 The code and model will be released by <strong>June 30th</strong>. Stay tuned, and feel free to try our <a href="https://huggingface.co/spaces/wushuang98/Direct3D-S2-v1.0-demo">demo</a> in the meantime!</p>
+            </div>
+          </div> -->
+          
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- <section class="teaser-image">
+  <div class="teaser-box">
+    <img id="teaser" src="assets/imgs/teaserv6.png" alt="Teaser image of CoPart"/>
+  </div>
+  <h2 class="subtitle has-text-centered">
+    <span class="dnerf">CoPart</span>: high quality part-based 3D generation
+  </h2>
+</section> -->
+
+<section class="hero teaser">
+  <div class="container is-max-desktop">
+    <div class="hero-body">
+      <video id="teaser" autoplay muted loop playsinline height="100%">
+        <source src="./assets/videos/teaser.mp4"
+                type="video/mp4">
+      </video>
+      <h2 class="subtitle has-text-centered">
+        <span class="dnerf"><br> CoPart</span>: high quality part-based 3D generation.
+      </h2>
+    </div>
+  </div>
+</section>
+
+<section class="hero is-light is-small">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div id="results-carousel" class="carousel results-carousel">
+
+        <!-- ───────── Item 1 ───────── -->
+        <div class="item item-fullbody">
+          <div class="media-wrapper" style="width:100%;">
+            <!-- video -->
+            <video id="meshy_jester-video" autoplay playsinline controls muted loop style="width:100%;">
+              <source src="assets/videos/page_gundam.mp4" type="video/mp4">
+            </video>
+          </div>
+        </div>
+
+        <!-- ───────── Item 2 ───────── -->
+        <div class="item item-shiba">
+          <div class="media-wrapper">
+            <video id="civitai_house0-video" autoplay playsinline controls muted loop style="width:100%">
+              <source src="assets/videos/page_fire.mp4" type="video/mp4">
+            </video>
+          </div>
+        </div>
+
+        <!-- ───────── Item 3 ───────── -->
+        <div class="item item-toby">
+          <div class="media-wrapper">
+            <video id="meshy_monster1-video" autoplay playsinline controls muted loop style="width:100%">
+              <source src="assets/videos/page_wheelchair.mp4" type="video/mp4">
+            </video>
+          </div>
+        </div>
+
+        <!-- ───────── Item 4 ───────── -->
+        <div class="item item-chair-tp-1">
+          <div class="media-wrapper">
+            <video id="civitai_man0-video" autoplay playsinline controls muted loop style="width:100%">
+              <source src="assets/videos/page_gundam.mp4" type="video/mp4">
+            </video>
+          </div>
+        </div>
+
+        <!-- ───────── Item 5 ───────── -->
+        <div class="item item-chair-tp-2">
+          <div class="media-wrapper">
+            <video id="civitai_monster1-video" autoplay playsinline controls muted style="width:100%">
+              <source src="assets/videos/page_gundam.mp4" type="video/mp4">
+            </video>
+          </div>
+        </div>
+
+        <!-- ───────── Item 6 ───────── -->
+        <div class="item item-chair-tp-2">
+          <div class="media-wrapper">
+            <video id="civitai_robot13-video" autoplay playsinline controls muted loop width="100%">
+              <source src="assets/videos/page_gundam.mp4" type="video/mp4">
+            </video>
+          </div>
+        </div>
+
+        <!-- ───────── Item 7 ───────── -->
+        <div class="item item-chair-tp-2">
+          <div class="media-wrapper">
+            <video id="lexica_character2-video" autoplay playsinline controls muted loop width="100%">
+              <source src="assets/videos/page_gundam.mp4" type="video/mp4">
+            </video>
+          </div>
+        </div>
+
+      </div> <!-- /carousel -->
+    </div>
+  </div>
+</section>
+
+<section class="hero teaser">
+  <div class="container is-max-desktop">
+    <div class="hero-body">
+      <h2 class="title is-3 has-text-centered"><br>PartVerse Dataset</h2>
+      <p>
+        We are pleased to release the first large-scale 3D object part dataset <b>PartVerse</b> that has been <b>manually annotated</b>.
+      </p>
+      <!-- <span class="dnerf"><br> CoPart</span>: high quality part-based 3D generation. -->
+      <img src="assets/imgs/data_teaser.png" alt="dit Comparasions" height="100%"><p>
+      <p>
+        <br>We follow the pipeline of <b>"raw data - mesh segment algorithm - human post correction"</b> to produce part-level data.
+      </p>
+      <img src="assets/imgs/dataset_pipeline1_01.png" alt="dit Comparasions" height="100%">
+      <p>
+        <br>Part-level text captions are provided, including <b>appearance, shape, and the relationship</b> between parts and the whole.
+      </p>
+      <img src="assets/imgs/dataset_pipeline2_01.png" alt="dit Comparasions" height="100%">
+    </div>
+  </div>
+</section>
+
+<!-- ───────── Toggle logic (place anywhere after the HTML above) ───────── -->
+<script>
+document.querySelectorAll('.toggle-btn').forEach(btn => {
+  const video = document.getElementById(btn.dataset.video);
+
+  /* container that will hold the iframe */
+  let iframeBox = null;         // we’ll lazily build it once
+  let iframe     = null;
+
+  /* helper – copy the video’s on-screen size */
+  const syncSize = () => {
+    const { width, height } = video.getBoundingClientRect();
+    if (iframe) {
+      iframe.style.width  = width  + 'px';
+      iframe.style.height = height + 'px';
+    }
+  };
+
+  /* run once so the iframe is correct on first swap */
+  window.addEventListener('resize', syncSize);
+
+  btn.addEventListener('click', () => {
+    const showingVideo = video.style.display !== 'none';
+
+    if (showingVideo) {                     // → show mesh
+      /* 1️⃣ create the iframe on-demand */
+      if (!iframeBox) {
+        iframeBox        = document.createElement('div');
+        iframe           = document.createElement('iframe');
+        iframe.src       = `render_glb.html?sequence=${btn.dataset.model}`;
+        iframe.style.border = '0';
+        iframeBox.appendChild(iframe);
+        video.parentNode.insertBefore(iframeBox, video.nextSibling);
+      }
+
+      syncSize();                           // 2️⃣ give it exact pixels
+
+      video.style.display   = 'none';
+      iframeBox.style.display = 'block';
+      video.pause?.();
+
+      btn.textContent = 'Load Video';
+    } else {                                // → show video
+      iframeBox.style.display = 'none';
+      video.style.display     = 'block';
+      video.play?.();
+
+      btn.textContent = 'Load Mesh';
+    }
+  });
+});
+</script>
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <!-- Abstract. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-five-fifths">
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified">
+          <p>
+            To generate 3D objects, early research focused on multi-view-driven approaches relying solely on 2D renderings. Recently, the 3D native latent diffusion paradigm has demonstrated superior performance in 3D generation, because it fully leverages the geometric information provided in ground truth 3D data. Despite its fast development, 3D diffusion still faces three challenges. First, the majority of these methods represent a 3D object by one single latent, regardless of its complexity. This may lead to detail loss when generating 3D objects with multiple complicated parts. Second, most 3D assets are designed parts by parts, yet the current holistic latent representation overlooks the independence of these parts and their interrelationships, limiting the model's generative ability. Third, current methods rely on global conditions (e.g., text, image, point cloud) to control the generation process, lacking detailed controllability. Therefore, motivated by how 3D designers create a 3D object, we present a new part-based 3D generation framework, CoPart, which represents a 3D object with multiple contextual part latents and simultaneously generates coherent 3D parts. This part-based framework has several advantages, including: i) reduces the encoding burden of intricate objects by decomposing them into simpler parts, ii) facilitates part learning and part relationship modeling, and iii) naturally supports part-level control. To ensure the coherence of part latents and to harness the powerful priors from foundation models, we propose a novel mutual guidance strategy to fine-tune pre-trained diffusion models for joint part latent denoising. We provide part-level text captions for each part, describing its shape, appearance, and relationship with the whole object.
+          </p>
+        </div>
+      </div>
+    </div>
+    <!--/ Abstract. -->
+
+
+<!-- <div align="center" style="margin-top:80px;" style="margin-bottom:120px;">
+<img style='height: auto; width: 75%; object-fit: contain' src="static/images/overview.png" alt="overview_image">
+</div>  -->
+
+
+    <!-- Paper video. -->
+    <!-- <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Video</h2>
+        <a id="overview_video"></a>
+          <video id="teaser" playsinline controls width="100%">
+            <source src="assets/comp1.m4v" type="video/mp4">
+          </video>
+      </div>
+    </div> -->
+    <!--/ Paper video. -->
+<!-- </div> -->
+</section>
+
+<section>
+  <div class="columns is-centered has-text-centered">
+    <h2 class="title is-3"> Method Overview</h2>
+  </div>
+  <br>
+  <div class="container is-max-desktop">
+    <!-- Abstract. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-five-fifths">
+        <img src="assets/imgs/copart_pipeline.png" alt="dit Comparasions">
+        <div class="content has-text-justified">
+          <p>
+          The framework of CoPart operates as follows: Gaussian noise is added to part image and geometric tokens extracted from the VAE, which are then fed into 3D and 2D denoisers. Mutual guidance (a) is introduced to facilitate information exchange between the 3D and 2D modalities (via Cross-Modality Attention) as well as between different parts (via Cross-Part Attention). Additionally, (b) the 3D bounding boxes are treated as cube meshes, and the extracted box tokens are injected into the 3D denoiser through cross-attention. Simultaneously, the boxes are rendered into 2D images and injected into the 2D denoiser via ControlNet. 
+          </p>
+        </div>
+      </div>
+    </div>
+</section>
+
+<!-- <section class="section">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-five-fifths">
+        <h2 class="title is-3">Dataset</h2>
+        <div class="content has-text-justified">
+          <p>
+            To ensure the coherence of part latents and to harness the powerful priors from foundation models, we propose a novel mutual guidance strategy to fine-tune pre-trained diffusion models for joint part latent denoising. We provide part-level text captions for each part, describing its shape, appearance, and relationship with the whole object.
+          </p>
+        </div>
+        <video id="dataset_video" playsinline controls width="100%">
+          <source src="assets/videos/dataset_video1.mp4" type="video/mp4">
+        </video>
+      </div>
+    </div>
+</section> -->
+
+
+
+<section class="section" id="BibTeX">
+  <div class="container is-max-desktop content">
+    <h2 class="title">BibTeX</h2>
+    <pre><code>@article{dong2024copart,
+  title={From One to More: Contextual Part Latents for 3D Generation},
+  author={Shaocong Dong, Lihe Ding, Xiao Chen, Yaokun Li, Yuxin WANG, Yucheng Wang, Qi WANG, Jaehyeok Kim, Chenjian Gao, Zhanpeng Huang, Zibin Wang, Tianfan Xue, Dan Xu},
+  journal={arXiv preprint arXiv:},
+  year={2025}
+}</code></pre>
+  </div>
+</section>
+
+
+
+<footer class="footer">
+  <div align="center" class="container">
+    <div class="columns is-centered">
+        <div class="content">
+            This website is borrowed from <a href="https://github.com/3d-moments/3d-moments.github.io">3d-moments</a>.
+        </div>
+      </div>
+    </div>
+</footer>
+
+
+</body>
+</html>
